@@ -292,7 +292,7 @@ cross_validate_adam <- function(k=5, X, Y, penalty,
 #' @inheritParams logistic_regression_gd
 #' @param k Number of folds used.
 #' @returns An optimal lambda value alongside a plot of all lambda values explored.
-cross_validate_gd <- function(k=5, X, Y, alpha = 0.01, penalty, lambda, max_iter = 1000, tol = 1e-6) {
+cross_validate_gd <- function(k=5, X, Y, alpha = 0.001, penalty, max_iter = 1000, tol = 1e-6) {
 
   # Check that penalty is one of the allowed values
   if (penalty == "none") {
@@ -328,7 +328,7 @@ cross_validate_gd <- function(k=5, X, Y, alpha = 0.01, penalty, lambda, max_iter
       train_Y <- unlist(Y_list[-k])
 
       #Train a model with ADAM at the current lambda value
-      cv.fit <- logistic_regression_gd(train_X, train_Y, alpha, penalty, lambda, maxit, tol, check_conv=FALSE)
+      cv.fit <- logistic_regression_gd(train_X, train_Y, alpha, penalty, lambda, max_iter, tol, check_conv=FALSE)
       cv.fit <- as.vector(cv.fit)
 
       #Make predictions on the test set using fitted model parameters

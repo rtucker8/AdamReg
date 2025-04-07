@@ -208,18 +208,15 @@ k = 10 #number of non-zero coefficients
 beta_k_neg = runif(k/2, -2, -.1) #true coefficients, negative
 beta_k_pos = runif(k/2, .1, 2) #true coefficients, positive
 beta_k = c(beta_k_neg, beta_k_pos) #true coefficients
-print(beta_k)
 
 beta = c(beta_k, rep(0, p-k)) #true coefficients
 beta = sample(beta, length(beta))#randomly permute the coefficients
 beta = c(runif(1, 0, 1), beta) #add intercept term
-print(beta)
 
 rmse_results <- list(glm = numeric(500),  adam = numeric(500), gd = numeric(500))
 results = list()
 
 for (i in 1:500) {
-  print(i)
 
   X = matrix(rnorm(n*p), n, p)
   X = scale(X)
