@@ -218,12 +218,6 @@ results = list()
 
 for (i in 1:500) {
 
-  X = matrix(rnorm(n*p), n, p)
-  X = scale(X)
-  X = cbind(1, X)
-
-  prob = 1/(1+exp(-(X%*%beta)))
-  Y = rbinom(n, 1, prob)
 
   # #Estimation with glm (uses Fisher Scoring to optimize)
   # glm.fit <- cv.glmnet(X[,-1], Y, alpha = 1, family = binomial)

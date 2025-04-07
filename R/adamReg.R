@@ -54,11 +54,11 @@ gradient_function <- function(theta, X, Y, penalty = "none", lambda=0) {
 #' @param alpha The learning rate (step size), fixed.
 #' @param penalty The penalty (L1, L2) for the loss function.
 #' @param lambda The numeric value of the penalty.
-#' @param max_iter The maximum number of iterations.
+#' @param maxit The maximum number of iterations.
 #' @param tol The tolerance for convergence.
 #' @param check_conv When TRUE, reports the number of iterations needed for convergence.
 #' @returns A numeric value.
-logistic_regression_gd <- function(X, Y, alpha = 0.01, penalty = "none", lambda = 0, max_iter = 1000, tol = 1e-6, check_conv = TRUE) {
+logistic_regression_gd <- function(X, Y, alpha = 0.01, penalty = "none", lambda = 0, maxit = 1000, tol = 1e-6, check_conv = TRUE) {
 
   # Initialize parameters (starting with zeros)
   theta <- rnorm(ncol(X), 0, 0.01)
@@ -67,7 +67,7 @@ logistic_regression_gd <- function(X, Y, alpha = 0.01, penalty = "none", lambda 
   prev_theta <- theta
   converged <- FALSE
 
-  for (iter in 1:max_iter) {
+  for (iter in 1:maxit) {
     # Compute the gradient
     grad <- gradient_function(theta, X, Y, penalty, lambda)
 
@@ -286,13 +286,13 @@ cross_validate_adam <- function(k=5, X, Y, penalty,
 #' Cross-validation of gradient descent for optimal lambda
 #'
 #' @description Cross-validation to identify the optimal lambda to be used in gradient descent optimization for estimating
-#' the coefficients in logistic regression. See \link{adam}.
+#' the coefficients in logistic regression. See \link{logistic_regression_gd}.
 #'
 #'
 #' @inheritParams logistic_regression_gd
 #' @param k Number of folds used.
 #' @returns An optimal lambda value alongside a plot of all lambda values explored.
-cross_validate_gd <- function(k=5, X, Y, alpha = 0.001, penalty, max_iter = 1000, tol = 1e-6) {
+cross_validate_gd <- function(k=5, X, Y, alpha = 0.001, penalty, maxit = 1000, tol = 1e-6) {
 
   # Check that penalty is one of the allowed values
   if (penalty == "none") {
@@ -327,8 +327,8 @@ cross_validate_gd <- function(k=5, X, Y, alpha = 0.001, penalty, max_iter = 1000
       train_X <- as.matrix(do.call(rbind, X_list[-k]))
       train_Y <- unlist(Y_list[-k])
 
-      #Train a model with ADAM at the current lambda value
-      cv.fit <- logistic_regression_gd(train_X, train_Y, alpha, penalty, lambda, max_iter, tol, check_conv=FALSE)
+      #Train a model with gradient descent at the current lambda value
+      cv.fit <- logistic_regression_gd(train_X, train_Y, alpha, penalty, lambda, maxit, tol, check_conv=FALSE)
       cv.fit <- as.vector(cv.fit)
 
       #Make predictions on the test set using fitted model parameters
