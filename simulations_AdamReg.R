@@ -1,4 +1,3 @@
-library(adam)
 library(AdamR)
 library(tidyverse)
 library(microbenchmark)
