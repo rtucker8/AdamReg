@@ -3,7 +3,7 @@ Type: Package
 Title: Adam Optimization for Regularized Logistic Regression Models
 Version: 0.1.0
 Author: Lillian Rountree and Rachel Gonzalez
-Maintainer: Rachel Gonzalez
+Maintainer: Rachel Gonzalez <rbtucker@umich.edu>
 Description: Functions to implement Adam optimization for logistic regression models, with or without penalization.
 License: What license is it under?
 Encoding: UTF-8
