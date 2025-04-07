@@ -155,58 +155,58 @@ adam <- function(X, Y, penalty = "none", lambda=0,
     stop("Batch size must be between 1 and the number of observations in X.")
   }
   
+
   # Characteristics of data
   p <- ncol(X)
   n <- nrow(X)
-  
-  # Scale data
-  # X[,-1] <- scale(X[,-1])
-  
+
   # Initialize parameter vector
-  theta <- rep(0, ncol(X))
-  
+  # theta <- rep(0, ncol(X))
+  theta <- runif(ncol(X), min=-1, max=1)
+
   #Initialize 1st and 2nd moment vectors
   m <- rep(0, length(theta))
   v <- rep(0, length(theta))
-  
+
   #Initialize time step
   t <- 0
-  
+
   #While theta_t not converged and t < maxit do
   while (t < maxit) {
-    
+
     t = t + 1 #Increment time step
-    
+
     #Take random subsample (mini batches) of size batch_size
     ids <- sample(1:n, batch_size)
     X_sub <- X[ids,]
     Y_sub <- Y[ids]
-    
+
     #Compute gradient
-    grad <- gradient_function(theta, X_sub, Y_sub, penalty, lambda)
-    
+    #grad <- logistic_grad(theta, X_sub, Y_sub)
+    grad <- gradient_function(theta, X_sub, Y_sub, penalty="none", lambda)
+
     #Update biased first and second raw moment estimates
     m <- beta_decay[1] * m + (1 - beta_decay[1]) * grad
     v <- beta_decay[2] * v + (1 - beta_decay[2]) * grad^2
-    
-    #Bias corrected moment estimates
+
+    #bias corrected moment estimates
     m_hat <- m/(1-beta_decay[1]^t)
     v_hat <- v/(1-beta_decay[2]^t)
-    
-    #Update parameter vector
-    theta_new = theta - (alpha/sqrt(t))*(m_hat / (sqrt(v_hat) + epsilon))
-    
+
+    #Update Parameter Vector
+    theta_new <- theta - alpha * (1/sqrt(t)) * (m_hat / (sqrt(v_hat) + epsilon))
+
     #Assess convergence
-    if (sum(apply(theta_new - theta, 2, function(x) x < tol)) == dim(X)[2]) {
+    if (sum(apply(theta_new - theta, 2, function(x) x < tol)) == dim(X)[2]){
       if (check_conv == TRUE){
-        print(paste("Converged in", t, "iterations"))}
+      print(paste("Converged in", t, "iterations"))}
       return(theta_new)
       break
     }
-    
+
     theta <- theta_new
   }
-  
+
   print(paste0("Algorithm did not converge in ", maxit, " iterations."))
   return(theta)
 }
