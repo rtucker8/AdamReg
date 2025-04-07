@@ -359,5 +359,3 @@ cross_validate_gd <- function(k=5, X, Y, alpha = 0.001, penalty, maxit = 1000, t
   return(max_lambda)
   
 }
-
-devtools::document()
