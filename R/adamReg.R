@@ -24,13 +24,12 @@ gradient_function <- function(theta, X, Y, penalty = "none", lambda=0) {
   
   eta <- X %*% theta # Logistic function
   mu <- 1 / (1 + exp(-eta))
+  grad <- t(X) %*% (mu - Y)
   
-  if (penalty == "none") {
-    grad <- t(X) %*% (mu - Y)
-  }else if (penalty == "lasso") {
-    grad <- t(X) %*% (mu - Y) + lambda*sign(theta)
+  if (penalty == "lasso") {
+    grad <- grad/nrow(X) + lambda*sign(theta)
   }else if (penalty == "ridge") {
-    grad <- t(X) %*% (mu - Y) + 2*lambda*theta
+    grad <- grad/nrow(X) + 2*lambda*theta
   }
   
   return(grad)
