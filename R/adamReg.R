@@ -160,7 +160,7 @@ adam <- function(X, Y, penalty = "none", lambda=0,
   n <- nrow(X)
   
   # Scale data
-  X[,-1] <- scale(X[,-1])
+  # X[,-1] <- scale(X[,-1])
   
   # Initialize parameter vector
   theta <- rep(0, ncol(X))
